@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { executeSP } from "../db/sp.executor";
 import { logger } from "../utils/logger";
-import { generateResponse } from "../utils/common.utils";
+import { generateSetupResponse } from "../utils/common.utils";
 
 /**
  * Vehicle Setup API — Handles Insert / Update operations
@@ -52,7 +52,7 @@ export const vehicleSetup = async (req: Request, res: Response): Promise<void> =
       ModifiedBy: userId
     });
 
-    const response = generateResponse("USP_VehicleSetup", result);
+    const response = generateSetupResponse("USP_VehicleSetup", result);
     logger.info("[API] [VehicleSetup] Response:", response);
     res.status(response.StatusCode).json(response);
   } catch (error: any) {

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { executeSP } from "../db/sp.executor";
 import { logger } from "../utils/logger";
-import { generateResponse } from "../utils/common.utils";
+import { generateSetupResponse } from "../utils/common.utils";
 
 export const controlRoomSetup = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -20,7 +20,7 @@ export const controlRoomSetup = async (req: Request, res: Response): Promise<voi
       ModifiedBy: userId
     });
 
-    const response = generateResponse("USP_ControlRoomSetup", result);
+    const response = generateSetupResponse("USP_ControlRoomSetup", result);
     logger.info(`[ControlRoomSetup]`, response);
     res.status(response.StatusCode).json(response);
   } catch (error: any) {

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { executeSP } from "../db/sp.executor";
 import { logger } from "../utils/logger";
-import { generateResponse } from "../utils/common.utils";
+import { generateSetupResponse } from "../utils/common.utils";
 
 /**
  * Device Setup API — Handles insert/update operations
@@ -35,7 +35,7 @@ export const deviceSetup = async (req: Request, res: Response): Promise<void> =>
       ModifiedBy: userId
     });
 
-    const response = generateResponse("USP_DeviceSetup", result);
+    const response = generateSetupResponse("USP_DeviceSetup", result);
     logger.info("[API] [DeviceSetup] Response:", response);
     res.status(response.StatusCode).json(response);
   } catch (error: any) {

@@ -2,6 +2,7 @@ import os from 'os';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import logger from './logger';
+import { ApiResponse, DbRecord } from '../models/api-response.model';
 
 /**
  * Detects and returns platform-specific root directory.
@@ -109,41 +110,53 @@ export const sanitizeFilename = (name: string): string =>
   name.replace(/[<>:"/\\|?*]+/g, '_');
 
 
-export const generateResponse = (spName: string, dbResult: any) => {
+export const generateSetupResponse = (spName: string, dbResult: any): ApiResponse => {
   try {
     if (!dbResult || !dbResult.recordset || dbResult.recordset.length === 0) {
       logger.warn(`[${spName}] Empty or invalid DB response.`);
       return {
         StatusCode: 500,
         AlertMessage: "Invalid database response.",
-        AlertData: null,
+        AlertData: [],
       };
     }
 
-    const row = dbResult.recordset[0];
-    const statusCode = row?.StatusCode || 200;
-    const alertMessage = row?.AlertMessage || "Operation completed successfully.";
-    let alertData = null;
+    const records: DbRecord[] = dbResult.recordset;
 
-    if (row?.AlertData) {
-      try {
-        alertData = JSON.parse(row.AlertData);
-      } catch {
-        alertData = row.AlertData;
-      }
-    }
+    const alertMessages: string[] = records
+      .map((r) => r.AlertMessage)
+      .filter((msg): msg is string => !!msg);
+
+    const uniqueCodes: number[] = [
+      ...new Set(records.map((r) => r.StatusCode).filter((c): c is number => typeof c === "number")),
+    ];
+
+    const finalStatusCode: number =
+      uniqueCodes.includes(500)
+        ? 500
+        : uniqueCodes.includes(409)
+        ? 409
+        : uniqueCodes.includes(400)
+        ? 400
+        : uniqueCodes[0] ?? 200;
+
+    const summaryMessage: string =
+      alertMessages.length > 1
+        ? "Multiple validation alerts returned from database."
+        : alertMessages[0] || "Operation completed successfully.";
 
     return {
-      StatusCode: statusCode,
-      AlertMessage: alertMessage,
-      AlertData: alertData,
+      StatusCode: finalStatusCode,
+      AlertMessage: summaryMessage,
+      AlertData: alertMessages,
     };
   } catch (err: any) {
-    logger.error(`[${spName}] Error in generateResponse:`, err);
+    logger.error(`[${spName}] Error in generateSetupResponse:`, err);
     return {
       StatusCode: 500,
       AlertMessage: "Error while processing response.",
-      AlertData: err.message,
+      AlertData: [err.message],
     };
   }
 };
+

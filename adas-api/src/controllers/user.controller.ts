@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { executeSP } from "../db/sp.executor";
 import { logger } from "../utils/logger";
-import { generateResponse } from "../utils/common.utils";
+import { generateSetupResponse } from "../utils/common.utils";
 
 /**
  * User Setup API — Handles insert/update of user accounts.
@@ -37,7 +37,7 @@ export const userSetup = async (req: Request, res: Response): Promise<void> => {
       ModifiedBy: userId
     });
 
-    const response = generateResponse("USP_UserSetup", result);
+    const response = generateSetupResponse("USP_UserSetup", result);
     logger.info("[API] [UserSetup] Response:", response);
     res.status(response.StatusCode).json(response);
   } catch (error: any) {

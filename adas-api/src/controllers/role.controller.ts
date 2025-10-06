@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { executeSP } from "../db/sp.executor";
 import { logger } from "../utils/logger";
-import { generateResponse } from "../utils/common.utils";
+import { generateSetupResponse } from "../utils/common.utils";
 
 /**
  * Role Setup API — Handles creation and update of roles.
@@ -23,7 +23,7 @@ export const roleSetup = async (req: Request, res: Response): Promise<void> => {
       ModifiedBy: userId
     });
 
-    const response = generateResponse("USP_RoleSetup", result);
+    const response = generateSetupResponse("USP_RoleSetup", result);
     logger.info("[API] [RoleSetup] Response:", response);
 
     res.status(response.StatusCode).json(response);
