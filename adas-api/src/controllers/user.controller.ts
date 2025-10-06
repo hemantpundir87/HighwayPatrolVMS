@@ -3,10 +3,6 @@ import { executeSP } from "../db/sp.executor";
 import { logger } from "../utils/logger";
 import { generateSetupResponse } from "../utils/common.utils";
 
-/**
- * User Setup API — Handles insert/update of user accounts.
- * Calls stored procedure: USP_UserSetup
- */
 export const userSetup = async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = (req as any).user?.UserId || 0;

@@ -2,11 +2,15 @@ import os from 'os';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import logger from './logger';
+import { Response } from "express";
 import { ApiResponse, DbRecord } from '../models/api-response.model';
 
-/**
- * Detects and returns platform-specific root directory.
- */
+export const generateUUID = (): string => uuidv4();
+export const isWindows = (): boolean => process.platform === 'win32';
+export const isLinux = (): boolean => process.platform === 'linux';
+export const isMac = (): boolean => process.platform === 'darwin';
+
+
 export const getRootPath = (): string => {
   const envRoot = process.env.ROOT_PATH;
   if (envRoot) return path.normalize(envRoot);
@@ -31,20 +35,13 @@ export const getRootPath = (): string => {
   return path.normalize(rootPath);
 };
 
-/**
- * Returns log directory path.
- */
 export const getLogDirectory = (subDir = ''): string => {
-  const root = getRootPath();                  // e.g. C:\ProjectConfig\ADASv1
-  const logsBase = path.join(root, 'logs');    // e.g. C:\ProjectConfig\ADASv1\logs
-
-  // If subDir passed (e.g. ADASAPI) → C:\ProjectConfig\ADASv1\logs\ADASAPI
+  const root = getRootPath();
+  const logsBase = path.join(root, 'logs');
   return path.normalize(subDir ? path.join(logsBase, subDir) : logsBase);
 };
 
-/**
- * Returns current IST (India Standard Time) formatted timestamp.
- */
+
 export const getISTDateTime = (format: string = 'YYYY-MM-DD HH:mm:ss'): string => {
   const now = new Date();
   const istOffset = 5.5 * 60 * 60 * 1000;
@@ -68,31 +65,10 @@ export const getISTDateTime = (format: string = 'YYYY-MM-DD HH:mm:ss'): string =
     .replace('ss', ss);
 };
 
-/**
- * Generates a unique UUID v4 string.
- */
-export const generateUUID = (): string => uuidv4();
+export const getCurrentYear = (): string => {
+  return new Date().getFullYear().toString();
+};
 
-/**
- * Standardized API response object.
- */
-export const buildResponse = (statusCode: number, message: string, data: any = null) => ({
-  StatusCode: statusCode,
-  AlertMessage: message,
-  AlertData: data,
-  Timestamp: getISTDateTime(),
-});
-
-/**
- * Platform helpers.
- */
-export const isWindows = (): boolean => process.platform === 'win32';
-export const isLinux = (): boolean => process.platform === 'linux';
-export const isMac = (): boolean => process.platform === 'darwin';
-
-/**
- * System diagnostics snapshot.
- */
 export const getSystemInfo = () => ({
   platform: os.platform(),
   hostname: os.hostname(),
@@ -103,9 +79,6 @@ export const getSystemInfo = () => ({
   freeMemMB: Math.round(os.freemem() / 1024 / 1024),
 });
 
-/**
- * Sanitize filename to be Windows-safe.
- */
 export const sanitizeFilename = (name: string): string =>
   name.replace(/[<>:"/\\|?*]+/g, '_');
 
@@ -114,11 +87,7 @@ export const generateSetupResponse = (spName: string, dbResult: any): ApiRespons
   try {
     if (!dbResult || !dbResult.recordset || dbResult.recordset.length === 0) {
       logger.warn(`[${spName}] Empty or invalid DB response.`);
-      return {
-        StatusCode: 500,
-        AlertMessage: "Invalid database response.",
-        AlertData: [],
-      };
+      return { StatusCode: 500, AlertMessage: "Invalid database response.", AlertData: [], };
     }
 
     const records: DbRecord[] = dbResult.recordset;
@@ -135,10 +104,10 @@ export const generateSetupResponse = (spName: string, dbResult: any): ApiRespons
       uniqueCodes.includes(500)
         ? 500
         : uniqueCodes.includes(409)
-        ? 409
-        : uniqueCodes.includes(400)
-        ? 400
-        : uniqueCodes[0] ?? 200;
+          ? 409
+          : uniqueCodes.includes(400)
+            ? 400
+            : uniqueCodes[0] ?? 200;
 
     const summaryMessage: string =
       alertMessages.length > 1
@@ -152,11 +121,25 @@ export const generateSetupResponse = (spName: string, dbResult: any): ApiRespons
     };
   } catch (err: any) {
     logger.error(`[${spName}] Error in generateSetupResponse:`, err);
-    return {
-      StatusCode: 500,
-      AlertMessage: "Error while processing response.",
-      AlertData: [err.message],
-    };
+    //handleErrorMessageResponse(err.message || err,res,500)
+    return { StatusCode: 500, AlertMessage: "Error while processing response.", AlertData: [err.message] };
   }
 };
 
+export function handleErrorMessageResponse(errorMessage: string, res: Response, statusCode: number = 500) {
+  return res.status(statusCode).json([{ AlertMessage: errorMessage || "RequestError", status: false, }]);
+}
+
+export function handleSuccessMessageResponse(alertMessage: string, res: Response) {
+  return res.status(200).json([{ AlertMessage: alertMessage || "Success", status: true, }]);
+}
+
+export function handleSingleData(data: any, res: Response, statusCode: number = 204) {
+  if (!data || typeof data !== 'object') {
+    return res.status(statusCode).send([]);
+  }
+  else {
+    return res.status(200).json(data);
+  }
+
+}

@@ -2,21 +2,18 @@ import jwt, { SignOptions, Secret, JwtPayload } from "jsonwebtoken";
 
 const SECRET: Secret = process.env.JWT_SECRET || "softomation_secret_key";
 
-/**
- * Generate JWT Token
- */
-export const generateToken = (
-  payload: object,
-  // accept string | number and silence the overly-strict type check
-  expiresIn: string | number = "1d"
-): string => {
+export const generateToken = (payload: object,expiresIn: string | number = "1d"): { token: string; formattedExpiry: string | number } => {
+  const expiryDate = new Date();
+  expiryDate.setDate(expiryDate.getDate() + 1);
+  const formattedExpiry =expiryDate.getFullYear() +"-" +String(expiryDate.getMonth() + 1).padStart(2, "0") +
+    "-" +String(expiryDate.getDate()).padStart(2, "0") +" " +String(expiryDate.getHours()).padStart(2, "0") +
+    ":" +String(expiryDate.getMinutes()).padStart(2, "0") +":" +String(expiryDate.getSeconds()).padStart(2, "0");
   const options: SignOptions = { expiresIn: expiresIn as any };
-  return jwt.sign(payload, SECRET, options);
+  const token = jwt.sign(payload, SECRET, options);
+  return { token, formattedExpiry };
 };
 
-/**
- * Verify JWT Token
- */
+
 export const verifyToken = (token: string): JwtPayload | string | null => {
   try {
     return jwt.verify(token, SECRET);

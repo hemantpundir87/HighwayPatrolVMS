@@ -5,6 +5,7 @@ import helmet from "helmet";
 import { logger } from "./utils/logger";
 import { getPool } from "./db/mssql.config";
 import controlRoomRoutes from "./routes/controlRoom.routes";
+import authRoutes from "./routes/auth.routes";
 
 dotenv.config();
 
@@ -32,7 +33,9 @@ app.get("/api/health", async (_req, res) => {
 });
 
 // 🚔 Main routes
+app.use("/api/auth", authRoutes);
 app.use("/api/controlroom", controlRoomRoutes);
+
 
 // 🧱 Global Error Handler
 app.use(
