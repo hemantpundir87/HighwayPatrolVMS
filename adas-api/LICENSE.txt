@@ -1,0 +1,7 @@
+Softomation Proprietary License
+© 2025 Softomation Technologies Pvt. Ltd. All rights reserved.
+
+This software and its associated documentation files (the "Software")
+are the confidential and proprietary information of Softomation Technologies Pvt. Ltd.
+Unauthorized copying, modification, distribution, or use of this Software, in whole or in part,
+is strictly prohibited without prior written consent from Softomation Technologies Pvt. Ltd.

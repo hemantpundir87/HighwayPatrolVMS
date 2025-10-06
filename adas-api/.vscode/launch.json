@@ -1,0 +1,12 @@
+{
+  "name": "Debug ADAS API (npm run dev)",
+  "type": "node",
+  "request": "launch",
+  "runtimeExecutable": "npm",
+  "runtimeArgs": ["run", "dev"],
+  "cwd": "${workspaceFolder}",
+  "console": "integratedTerminal",
+  "restart": true,
+  "env": { "NODE_ENV": "development" },
+  "skipFiles": ["<node_internals>/**", "node_modules/**"]
+}
