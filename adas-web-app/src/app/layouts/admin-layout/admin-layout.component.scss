@@ -1,0 +1,14 @@
+:host {
+  @apply flex flex-col min-h-screen bg-gray-50 text-gray-800 transition-colors;
+  &.dark {
+    @apply bg-gray-900 text-gray-100;
+  }
+}
+
+.main-wrapper {
+  @apply flex flex-1 overflow-hidden pt-14 pb-10;
+}
+
+.content {
+  @apply flex-1 p-6 transition-all duration-300;
+}

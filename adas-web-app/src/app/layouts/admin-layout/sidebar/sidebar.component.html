@@ -1,0 +1,59 @@
+<aside class="fixed top-14 left-0 h-[calc(100vh-88px)] w-auto border-r shadow-md z-50 transition-all" [ngClass]="{
+    'bg-white border-gray-200': !isDarkMode,
+    'bg-gray-800 border-gray-700 text-gray-100': isDarkMode
+  }" [style.width]="collapsed ? '5rem' : '16rem'">
+  <!-- Scrollable inner wrapper -->
+  <div class="h-full overflow-y-auto overflow-x-visible relative">
+    <ul class="space-y-1 p-2 text-sm">
+      <ng-container *ngFor="let m of menus">
+        <li class="relative" (mouseenter)="onEnter(m, $event)" (mouseleave)="onLeave()">
+          <!-- Parent -->
+          <div
+            class="menu-item flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-gray-100"
+            [ngClass]="{
+              'bg-[#E53935]/10': isActive(m.RouteUrl) || activeId === m.MenuId
+            }" (click)="m.children?.length ? toggle(m) : navigate(m)">
+            <i class="mdi text-xl" [ngClass]="m.IconName"></i>
+            <span class="whitespace-nowrap transition-all duration-300 overflow-hidden" [class.hidden]="collapsed">
+              {{ m.MenuName }}
+            </span>
+          </div>
+
+          <!-- Fly-out menu (absolute to page, not inside scroll area) -->
+          <ng-container *ngIf="collapsed && hoverId === m.MenuId">
+            <!-- <div *ngIf="collapsed && hoverId === m.MenuId" class="fixed z-[1000] max-h-[calc(100vh-2rem)] overflow-y-auto
+         bg-white border border-gray-200 text-gray-800 shadow-xl rounded-md
+         dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 animate-fade-in"
+              [style.left]="(collapsed ? '6.5rem' : '16rem')" [style.top]="popupTop + 'px'"> -->
+            <div *ngIf="collapsed && hoverId === m.MenuId" class="fixed z-[1000] max-h-[calc(100vh-2rem)] overflow-y-auto
+         bg-white border border-gray-200 text-gray-800 shadow-xl rounded-md
+         dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 animate-fade-in"
+              [style.left]="collapsed ? '5.4rem' : '16.6rem'" [style.top]="popupTop + 'px'">
+
+              <div class="px-4 py-2 text-sm font-semibold">
+                {{ m.MenuName }}
+              </div>
+              <ul *ngIf="m.children?.length" class="py-1 flex flex-col">
+                <li *ngFor="let s of m.children" (click)="navigate(s)"
+                  class="px-4 py-2 flex items-center gap-2 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                  <i class="mdi text-base" [ngClass]="s.IconName"></i>
+                  <span>{{ s.MenuName }}</span>
+                </li>
+              </ul>
+            </div>
+          </ng-container>
+
+          <!-- Expanded submenu -->
+          <ul *ngIf="m.children?.length && activeId === m.MenuId && !collapsed"
+            class="mt-2 flex flex-col gap-2 animate-slide-down">
+            <li *ngFor="let s of m.children" (click)="navigate(s)" [class.bg-gray-100]="isActive(s.RouteUrl)"
+              class="flex items-center gap-2 p-2 pl-6 rounded-md cursor-pointer transition-all duration-200 hover:bg-gray-100">
+              <i class="mdi text-sm" [ngClass]="s.IconName"></i>
+              <span class="text-sm font-medium">{{ s.MenuName }}</span>
+            </li>
+          </ul>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</aside>

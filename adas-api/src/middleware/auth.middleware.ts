@@ -1,12 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { Secret } from 'jsonwebtoken';
+import { AuthenticatedUser } from '../models/auth.model';
+
+const SECRET: Secret = process.env.JWT_SECRET || "softomation_secret_key";
 
 export interface AuthenticatedRequest extends Request {
-  user?: {
-    UserId: number;
-    RoleId?: number;
-    UserName?: string;
-  };
+  user?: AuthenticatedUser;
 }
 
 export const verifyToken = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
@@ -16,7 +15,7 @@ export const verifyToken = (req: AuthenticatedRequest, res: Response, next: Next
       return res.status(401).json({ message: 'Access token missing' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { UserId: number; RoleId?: number; UserName?: string };
+    const decoded = jwt.verify(token, SECRET) as AuthenticatedUser;
     req.user = decoded;
 
     next();

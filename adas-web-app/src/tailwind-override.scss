@@ -1,0 +1,24 @@
+/* =========================================================
+   GLOBAL TAILWIND OVERRIDES — Prevent Angular Material resets
+   ========================================================= */
+
+@layer utilities {
+  /* Re-enforce Tailwind margins globally */
+  [class*="mt-"]   { margin-top:    unset !important; }
+  [class*="mr-"]   { margin-right:  unset !important; }
+  [class*="mb-"]   { margin-bottom: unset !important; }
+  [class*="ml-"]   { margin-left:   unset !important; }
+
+  /* Re-apply Tailwind’s computed margin values */
+  .mt-0   { margin-top: 0rem !important; }
+  .mt-1   { margin-top: 0.25rem !important; }
+  .mt-2   { margin-top: 0.5rem !important; }
+  .mt-3   { margin-top: 0.75rem !important; }
+  .mt-4   { margin-top: 1rem !important; }
+  .mt-5   { margin-top: 1.25rem !important; }
+  .mt-6   { margin-top: 1.5rem !important; }
+  .mt-8   { margin-top: 2rem !important; }
+  .mt-10  { margin-top: 2.5rem !important; }
+
+  /* Same pattern for mb-*, ml-*, mr-* if needed */
+}

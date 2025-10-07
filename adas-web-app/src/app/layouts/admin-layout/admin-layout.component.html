@@ -1,0 +1,12 @@
+<app-topbar (toggleSidebar)="toggleSidebar()" (toggleTheme)="toggleTheme()"></app-topbar>
+
+<div class="main-wrapper transition-all duration-300 ease-in-out">
+  <app-sidebar [menus]="menuItems" [collapsed]="sidebarCollapsed"></app-sidebar>
+
+  <main
+    class="content transition-all duration-300 ease-in-out"
+    [style.marginLeft]="sidebarCollapsed ? '5rem' : '16rem'">
+    <router-outlet></router-outlet>
+    <app-footer></app-footer>
+  </main>
+</div>

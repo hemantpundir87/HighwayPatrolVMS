@@ -1,0 +1,11 @@
+:host {
+  @apply block;
+
+  footer {
+    @apply backdrop-blur-md transition-colors;
+  }
+
+  :host-context(.dark) footer {
+    @apply bg-gray-800 border-gray-700 text-gray-300;
+  }
+}
