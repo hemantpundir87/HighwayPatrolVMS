@@ -162,7 +162,6 @@ export function handleDatalist(result: any, res: Response) {
         if (Array.isArray(data)) {
             data = manage_datastatus(data);
         }
-        console.log(data)
         return res.status(200).json(data);
     } else {
         return res.status(204).send();

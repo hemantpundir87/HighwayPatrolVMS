@@ -9,7 +9,8 @@ import { MenuItem, MenuService } from '../../core/services/menu.service';
 })
 export class AdminLayoutComponent implements OnInit {
   menuItems: MenuItem[] = [];
-  sidebarCollapsed = true;
+  sidebarCollapsed = false;
+  isDarkMode = false;
   @HostBinding('class.dark') isDark = false;
 
   constructor(private menuService: MenuService) {}

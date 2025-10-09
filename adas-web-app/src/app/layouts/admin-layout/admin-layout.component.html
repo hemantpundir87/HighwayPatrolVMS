@@ -1,12 +1,13 @@
-<app-topbar (toggleSidebar)="toggleSidebar()" (toggleTheme)="toggleTheme()"></app-topbar>
+<div class="app-layout">
+  <app-topbar (toggleSidebar)="toggleSidebar()" (toggleTheme)="toggleTheme()"></app-topbar>
+  <div class="main-wrapper">
+    <app-sidebar [menus]="menuItems" [collapsed]="sidebarCollapsed" [isDarkMode]="isDarkMode"
+      [ngClass]="sidebarCollapsed ? 'collapsed' : 'expanded'">
+    </app-sidebar>
 
-<div class="main-wrapper transition-all duration-300 ease-in-out">
-  <app-sidebar [menus]="menuItems" [collapsed]="sidebarCollapsed"></app-sidebar>
-
-  <main
-    class="content transition-all duration-300 ease-in-out"
-    [style.marginLeft]="sidebarCollapsed ? '5rem' : '16rem'">
-    <router-outlet></router-outlet>
-    <app-footer></app-footer>
-  </main>
+    <main class="content-area">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+  <app-footer></app-footer>
 </div>

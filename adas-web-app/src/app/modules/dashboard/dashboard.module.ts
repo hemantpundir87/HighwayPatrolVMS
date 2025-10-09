@@ -1,17 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardRoutingModule } from './dashboard-routing.module';
-import { HomeComponent } from './home/home.component';
-import { MatCardModule } from '@angular/material/card';  // ✅ Add this
+import { SharedModule } from '../../shared/shared.module';
+import { DashboardHomeComponent } from './components/dashboard-home/dashboard-home.component';
 
 @NgModule({
-  declarations: [
-    HomeComponent
-  ],
-  imports: [
-    CommonModule,
-    DashboardRoutingModule,
-    MatCardModule  // ✅ Required for <mat-card>, <mat-card-title>, etc.
-  ]
+  declarations: [DashboardHomeComponent],
+  imports: [CommonModule, SharedModule, DashboardRoutingModule]
 })
-export class DashboardModule { }
+export class DashboardModule {}

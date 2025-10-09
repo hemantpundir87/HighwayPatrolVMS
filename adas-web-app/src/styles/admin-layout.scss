@@ -1,0 +1,327 @@
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Between header (56px) and footer (40px) */
+.main-wrapper {
+  display: flex;
+  position: relative;
+  height: calc(100vh - 96px);
+  margin-top: 56px;
+  margin-bottom: 40px;
+  overflow: hidden;
+  background-color: #f9fafb; /* light gray */
+  transition: all 0.3s ease;
+}
+
+/* Sidebar widths */
+app-sidebar {
+  width: 15rem; /* expanded = 256px */
+  transition: width 0.3s ease;
+}
+
+app-sidebar.collapsed {
+  width: 3rem; /* collapsed = 80px */
+}
+
+/* Router content area */
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1rem;
+  background-color: #f9fafb;
+  transition: all 0.3s ease;
+}
+
+/* Scrollbar styling */
+.content-area::-webkit-scrollbar {
+  width: 8px;
+}
+.content-area::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+.content-area::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+/* Dark mode support */
+.dark .main-wrapper {
+  background-color: #111827; /* gray-900 */
+}
+.dark .content-area {
+  background-color: #1f2937; /* gray-800 */
+  color: #e5e7eb;
+}
+
+footer { 
+  position: fixed;                     /* make it stay at bottom */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;                        /* Fixed height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border-top: 1px solid #e5e7eb;       /* Light gray border */
+  color: #4b5563;                      /* text-gray-600 */
+  font-size: 0.875rem;                 /* text-sm */
+  box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.05);
+  z-index: 40;
+}
+
+/* Optional dark mode variant */
+.dark footer {
+  background-color: #1f2937;             /* gray-800 */
+  border-color: #374151;                 /* gray-700 */
+  color: #e5e7eb;                        /* gray-200 */
+}
+
+header {
+  position: fixed;                     /* make it stay at top */
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;                        /* Fixed height */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;    /* light gray border */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  z-index: 50;
+}
+
+header .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #e53935;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+header button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #e53935;
+  padding: 0.25rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+header button:hover {
+  transform: scale(1.1);
+  color: #c62828; /* darker red on hover */
+}
+
+header .actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #4b5563; /* text-gray-700 */
+}
+
+header .actions .user {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+header i {
+  font-size: 1.25rem; /* mdi icon size */
+}
+
+/* Optional dark mode (if you're toggling via a .dark class) */
+.dark header {
+  background-color: #1f2937;  /* gray-800 */
+  border-color: #374151;      /* gray-700 */
+  color: #f9fafb;
+}
+
+.dark header .brand {
+  color: #ef4444;
+}
+
+.dark header .actions {
+  color: #e5e7eb;
+}
+
+
+.sidebar {
+  position: fixed;
+  top: 56px;
+  bottom: 40px;
+  left: 0;
+  z-index: 50;
+  background: #fff;
+  border-right: 1px solid #e5e7eb;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 256px;
+  overflow: hidden;
+  will-change: width;
+}
+
+
+.sidebar.collapsed {
+  width: 65px; /* collapsed */
+}
+
+/* Scrollable area */
+.scroll-wrap {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Menu Item */
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #111827;
+  font-weight: 500;
+  transition: all 0.25s ease;
+
+  i {
+    font-size: 1.25rem;
+    color: #e53935;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background-color: rgba(229, 57, 53, 0.08);
+  }
+
+  &.active {
+    background-color: rgba(229, 57, 53, 0.12);
+    font-weight: 600;
+  }
+}
+
+/* Collapsed mode cleanup */
+.sidebar.collapsed {
+  .menu-item {
+    justify-content: center;
+    gap: 0;
+    padding: 12px 0;
+  }
+  .menu-item span,
+  .menu-item .mdi-chevron-up,
+  .menu-item .mdi-chevron-down {
+    display: none;
+  }
+  ul ul {
+    display: none !important;
+  }
+}
+
+/* Submenu */
+ul li ul {
+  margin-top: 4px;
+  margin-left: 14px;
+  border-left: 1px solid #e5e7eb;
+  padding-left: 8px;
+
+  li {
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    i {
+      font-size: 0.9rem;
+      color: #e53935;
+    }
+
+    &:hover {
+      background-color: rgba(229, 57, 53, 0.08);
+    }
+
+    &.active {
+      background-color: rgba(229, 57, 53, 0.12);
+      font-weight: 600;
+    }
+  }
+}
+
+/* Tooltip for collapsed mode */
+.sidebar.collapsed .menu-item {
+  position: relative;
+
+  &:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 110%;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    background-color: #111827;
+    color: #fff;
+    font-size: 12px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+  }
+}
+
+/* =======================
+   🌙 Dark Mode Sidebar
+   ======================= */
+
+.dark .sidebar {
+  background-color: #1f2937; /* gray-800 */
+  border-color: #374151;     /* gray-700 */
+}
+
+.dark .menu-item {
+  color: #e5e7eb; /* text-gray-200 */
+}
+
+.dark .menu-item i {
+  color: #ef4444; /* red-500 icon */
+}
+
+.dark .menu-item:hover {
+  background-color: rgba(239, 68, 68, 0.1); /* red hover tint */
+}
+
+.dark .menu-item.active {
+  background-color: rgba(239, 68, 68, 0.2);
+  font-weight: 600;
+}
+
+.dark ul li ul {
+  border-color: #374151;
+}
+
+.dark ul li ul li {
+  color: #d1d5db; /* gray-300 */
+}
+
+.dark ul li ul li:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.dark ul li ul li.active {
+  background-color: rgba(239, 68, 68, 0.2);
+}
+
+/* Tooltip background */
+.dark .sidebar.collapsed .menu-item:hover::after {
+  background-color: #f9fafb;  /* white tooltip in dark mode */
+  color: #111827;             /* dark text */
+}
+

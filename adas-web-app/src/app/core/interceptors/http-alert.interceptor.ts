@@ -3,9 +3,10 @@ import {
   HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse, HttpErrorResponse
 } from '@angular/common/http';
 import { Observable, catchError, map, throwError } from 'rxjs';
-import { AlertService } from '../services/alert.service';
+
 import { TokenService } from '../services/token.service';
 import { Router } from '@angular/router';
+import { AlertService } from '../services/alert.service';
 
 @Injectable()
 export class HttpAlertInterceptor implements HttpInterceptor {

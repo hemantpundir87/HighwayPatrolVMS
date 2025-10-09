@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -8,43 +9,19 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  /**
-   * GET request
-   * Example: api.get('/vehicles', { status: 'active' })
-   */
-  get<T>(url: string, params?: Record<string, any>) {
-    let httpParams = new HttpParams();
-    if (params) {
-      Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          httpParams = httpParams.set(key, value);
-        }
-      });
-    }
-    return this.http.get<T>(`${this.baseUrl}${url}`, { params: httpParams });
+  get<T>(url: string): Observable<T> {
+    return this.http.get<T>(`${this.baseUrl}${url}`);
   }
 
-  /**
-   * POST request
-   * Example: api.post('/auth/login', body)
-   */
-  post<T>(url: string, body: any) {
+  post<T>(url: string, body: any): Observable<T> {
     return this.http.post<T>(`${this.baseUrl}${url}`, body);
   }
 
-  /**
-   * PUT request
-   * Example: api.put('/users/1', updatedUser)
-   */
-  put<T>(url: string, body: any) {
+  put<T>(url: string, body: any): Observable<T> {
     return this.http.put<T>(`${this.baseUrl}${url}`, body);
   }
 
-  /**
-   * DELETE request
-   * Example: api.delete('/users/1')
-   */
-  delete<T>(url: string) {
+  delete<T>(url: string): Observable<T> {
     return this.http.delete<T>(`${this.baseUrl}${url}`);
   }
 }

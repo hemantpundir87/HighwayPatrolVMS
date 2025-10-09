@@ -1,0 +1,20 @@
+<header>
+  <div class="brand">
+    <button type="button" (click)="toggleSidebar.emit()">
+      <i class="mdi mdi-menu text-2xl"></i>
+    </button>
+    <span>Rakshak ADAS</span>
+  </div>
+
+  <div class="actions">
+    <button type="button" (click)="toggleTheme.emit()">
+      <i class="mdi mdi-theme-light-dark"></i>
+    </button>
+    <span class="user">
+      <i class="mdi mdi-account-circle"></i> Admin
+    </span>
+    <button type="button" (click)="logout()">
+      <i class="mdi mdi-logout"></i>
+    </button>
+  </div>
+</header>

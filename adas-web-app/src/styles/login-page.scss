@@ -1,0 +1,60 @@
+/* =====================================
+   Rakshak ADAS — Login Page Styles
+   File: src/styles/login-page.scss
+   ===================================== */
+
+/* Background */
+.login-bg {
+  @apply relative min-h-screen bg-cover bg-center bg-no-repeat font-inter;
+  background-image: url('/assets/images/adas-road.jpg');
+}
+
+/* Overlay */
+.login-overlay {
+  @apply absolute inset-0 bg-black/60 backdrop-blur-sm;
+}
+
+/* Card Container */
+.login-card {
+  @apply bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl w-full max-w-md p-8 text-center border border-gray-200;
+}
+
+/* Logo Section */
+.login-logo {
+  @apply flex flex-col items-center mb-6;
+
+  img {
+    @apply h-14 mb-3 drop-shadow-md;
+  }
+
+  h2 {
+    @apply text-2xl font-extrabold text-[#E53935] tracking-wide;
+  }
+
+  p {
+    @apply text-gray-700 text-xs tracking-widest font-semibold uppercase;
+  }
+
+  .divider {
+    @apply h-0.5 w-20 bg-[#E53935] mt-2;
+  }
+}
+
+/* Inputs */
+.login-card input {
+  @apply w-full pl-10 pr-4 py-2 border rounded-md bg-white/80 focus:ring-2 focus:ring-[#E53935]/70 focus:border-[#E53935] outline-none transition border-gray-300;
+
+  &.ng-invalid.ng-touched {
+    @apply border-red-500;
+  }
+}
+
+/* Submit Button */
+.login-card button[type='submit'] {
+  @apply w-full py-2 bg-[#E53935] text-white font-semibold rounded-md hover:bg-[#c62828] transition disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-4;
+}
+
+/* Footer */
+.login-footer {
+  @apply text-gray-600 text-xs mt-6;
+}
