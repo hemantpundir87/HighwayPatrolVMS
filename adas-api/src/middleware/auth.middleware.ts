@@ -18,7 +18,7 @@ export const verifyToken = (
 
     const authHeader = req.headers.authorization;
     if (!authHeader?.startsWith('Bearer ')) {
-      console.error('❌ Missing Authorization header');
+      //console.error('❌ Missing Authorization header');
       return res.status(401).json({ message: 'Access token missing' });
     }
 
@@ -39,7 +39,7 @@ export const verifyToken = (
     //console.log('✅ Token verified for user:', req.user);
     next();
   } catch (err: any) {
-    console.error('❌ Token verification failed:', err.message);
+    //console.error('❌ Token verification failed:', err.message);
     return res.status(403).json({ message: 'Invalid or expired token' });
   }
 };

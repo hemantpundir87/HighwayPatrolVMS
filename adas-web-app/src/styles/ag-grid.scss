@@ -1,0 +1,29 @@
+/* Light Mode */
+.ag-theme-alpine {
+  --ag-background-color: #ffffff;
+  --ag-header-background-color: #f3f4f6;
+  --ag-odd-row-background-color: #f9fafb;
+  --ag-border-color: #e5e7eb;
+  --ag-row-hover-color: #fef2f2;
+  --ag-header-foreground-color: #111827;
+  --ag-foreground-color: #1f2937;
+  --ag-font-family: 'Inter', sans-serif;
+  --ag-font-size: 14px;
+}
+
+/* Dark Mode */
+.dark .ag-theme-alpine {
+  --ag-background-color: #1f2937 !important;
+  --ag-header-background-color: #374151 !important;
+  --ag-odd-row-background-color: #111827 !important;
+  --ag-border-color: #374151 !important;
+  --ag-row-hover-color: rgba(239, 68, 68, 0.15) !important;
+  --ag-header-foreground-color: #f9fafb !important;
+  --ag-foreground-color: #e5e7eb !important;
+}
+
+/* Optional rounded edges */
+.ag-theme-alpine {
+  border-radius: 8px;
+  overflow: hidden;
+}

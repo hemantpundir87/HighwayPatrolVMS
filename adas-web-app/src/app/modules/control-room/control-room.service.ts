@@ -23,7 +23,7 @@ export class ControlRoomService {
 
   private controller = '/controlroom'; // 👈 controller name only
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService) { }
 
   /**
    * 🔹 Get all control room records
@@ -35,7 +35,15 @@ export class ControlRoomService {
   /**
    * 🔹 Create or update a control room
    */
-  saveControlRoom(payload: Partial<ControlRoom>): Observable<any> {
+  saveControlRoom(data: Partial<ControlRoom>): Observable<any> {
+    const payload = {
+      ...data,
+      Latitude: parseFloat(String(data.Latitude ?? 0)) || 0,
+      Longitude: parseFloat(String(data.Longitude ?? 0)) || 0,
+      Chainage: parseFloat(String(data.Chainage ?? 0)) || 0,
+      DataStatus: data.DataStatus ? 1 : 2, // boolean → tinyint
+    };
+
     return this.api.post(`${this.controller}/setup`, payload);
   }
 

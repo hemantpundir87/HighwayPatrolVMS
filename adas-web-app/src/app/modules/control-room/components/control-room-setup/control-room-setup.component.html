@@ -1,0 +1,59 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+
+<mat-dialog-content [formGroup]="form" class="flex flex-col gap-4 mt-2">
+
+  <!-- Control Room Name -->
+  <mat-form-field appearance="fill">
+    <mat-label>Control Room Name</mat-label>
+    <input matInput formControlName="ControlRoomName" placeholder="Enter control room name" />
+    <mat-error *ngIf="form.get('ControlRoomName')?.touched && form.get('ControlRoomName')?.invalid">
+      {{ getError('ControlRoomName') }}
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Location -->
+  <mat-form-field appearance="fill">
+    <mat-label>Location</mat-label>
+    <input matInput formControlName="Location" placeholder="Enter location" />
+    <mat-error *ngIf="form.get('Location')?.touched && form.get('Location')?.invalid">
+      {{ getError('Location') }}
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Latitude / Longitude -->
+  <div class="flex gap-3">
+    <mat-form-field appearance="fill" class="flex-1">
+      <mat-label>Latitude</mat-label>
+      <input matInput formControlName="Latitude" placeholder="Ex: 23.4567" />
+      <mat-error *ngIf="form.get('Latitude')?.touched && form.get('Latitude')?.invalid">
+        {{ getError('Latitude') }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="flex-1">
+      <mat-label>Longitude</mat-label>
+      <input matInput formControlName="Longitude" placeholder="Ex: 77.6543" />
+      <mat-error *ngIf="form.get('Longitude')?.touched && form.get('Longitude')?.invalid">
+        {{ getError('Longitude') }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <!-- Chainage -->
+  <mat-form-field appearance="fill">
+    <mat-label>Chainage</mat-label>
+    <input matInput formControlName="Chainage" placeholder="Ex: 12.345" />
+    <mat-error *ngIf="form.get('Chainage')?.touched && form.get('Chainage')?.invalid">
+      {{ getError('Chainage') }}
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Active Toggle -->
+  <mat-slide-toggle formControlName="DataStatus">Active</mat-slide-toggle>
+</mat-dialog-content>
+
+<!-- Buttons -->
+<mat-dialog-actions align="end" class="mt-4">
+  <button mat-stroked-button (click)="close()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="save()">Save</button>
+</mat-dialog-actions>

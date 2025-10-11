@@ -85,44 +85,67 @@ export const sanitizeFilename = (name: string): string =>
 
 export const generateSetupResponse = (spName: string, dbResult: any): ApiResponse => {
   try {
-    if (!dbResult || !dbResult.recordset || dbResult.recordset.length === 0) {
+    const records = Array.isArray(dbResult?.recordset)
+      ? dbResult.recordset
+      : Array.isArray(dbResult)
+        ? dbResult
+        : [];
+
+    if (!records.length) {
       logger.warn(`[${spName}] Empty or invalid DB response.`);
-      return { StatusCode: 500, AlertMessage: "Invalid database response.", AlertData: [], };
+      return { StatusCode: 500, AlertMessage: 'Invalid database response.', AlertData: [] };
     }
 
-    const records: DbRecord[] = dbResult.recordset;
+    const first = records[0];
 
-    const alertMessages: string[] = records
-      .map((r) => r.AlertMessage)
-      .filter((msg): msg is string => !!msg);
+    const alertMessages = records
+      .map((r: { AlertMessage?: string }) => r.AlertMessage)
+      .filter((msg: any): msg is string => !!msg);
 
-    const uniqueCodes: number[] = [
-      ...new Set(records.map((r) => r.StatusCode).filter((c): c is number => typeof c === "number")),
+    const uniqueCodes = [
+      ...new Set(
+        records
+          .map((r: { StatusCode?: number }) => r.StatusCode)
+          .filter((c: any): c is number => typeof c === 'number')
+      ),
     ];
 
-    const finalStatusCode: number =
+    const finalStatusCode = Number(
       uniqueCodes.includes(500)
         ? 500
         : uniqueCodes.includes(409)
-          ? 409
-          : uniqueCodes.includes(400)
-            ? 400
-            : uniqueCodes[0] ?? 200;
+        ? 409
+        : uniqueCodes.includes(400)
+        ? 400
+        : uniqueCodes[0] ?? 200
+    );
 
-    const summaryMessage: string =
+    // ✅ Combine multiple 409 messages nicely
+    const summaryMessage =
       alertMessages.length > 1
-        ? "Multiple validation alerts returned from database."
-        : alertMessages[0] || "Operation completed successfully.";
+        ? alertMessages.join(' | ')
+        : alertMessages[0] || 'Operation completed successfully.';
+
+    // ✅ Parse JSON AlertData (only once)
+    let alertData: any = [];
+    try {
+      alertData = first.AlertData ? JSON.parse(first.AlertData) : [];
+    } catch {
+      alertData = first.AlertData || [];
+    }
 
     return {
       StatusCode: finalStatusCode,
       AlertMessage: summaryMessage,
-      AlertData: alertMessages,
+      AlertData: alertData,
     };
   } catch (err: any) {
     logger.error(`[${spName}] Error in generateSetupResponse:`, err);
-    //handleErrorMessageResponse(err.message || err,res,500)
-    return { StatusCode: 500, AlertMessage: "Error while processing response.", AlertData: [err.message] };
+    return {
+      StatusCode: 500,
+      AlertMessage: 'Error while processing response.',
+      AlertData: [err.message],
+    };
   }
 };
 
@@ -156,7 +179,6 @@ function manage_datastatus(data: any) {
 }
 
 export function handleDatalist(result: any, res: Response) {
-  console.log(result)
   if (result && result.length > 0) {
     let data = result;
     if (Array.isArray(data)) {

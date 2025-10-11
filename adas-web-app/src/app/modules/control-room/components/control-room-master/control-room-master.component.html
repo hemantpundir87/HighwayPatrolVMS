@@ -1,68 +1,48 @@
 <div class="flex flex-col p-2 confi-page-container">
-  <div class="flex flex-wrap justify-between items-center mb-4 p-2 rounded-lg bg-white shadow-sm border border-gray-200">
-  <!-- Left Section -->
-  <div class="flex items-center gap-2">
-    <i class="mdi mdi-video-input-component text-[#E53935] text-2xl"></i>
-    <h2 class="m-0 text-lg font-semibold text-gray-800">Control Room Master</h2>
-  </div>
-
-  <!-- Right Section -->
-  <div class="flex items-center gap-2">
-    <!-- Search box -->
-    <div class="relative">
-      <i class="mdi mdi-magnify absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
-      <input
-        type="text"
-        placeholder="Search in grid..."
-        class="pl-8 pr-3 py-1.5 w-48 border border-gray-300 rounded-md text-sm text-gray-700 
-               bg-gray-50 focus:bg-white focus:ring-1 focus:ring-[#E53935] focus:border-[#E53935] outline-none transition"
-        (input)="onQuickFilter($event)"
-      />
+  <div
+    class="flex flex-wrap justify-between items-center mb-4 p-2 rounded-lg bg-white shadow-sm border border-gray-200">
+    <!-- Left Section -->
+    <div class="flex items-center gap-2">
+      <i class="mdi mdi-video-input-component text-[#E53935] text-2xl"></i>
+      <h2 class="m-0 text-lg font-semibold text-gray-800">Control Room Master</h2>
     </div>
 
-    <!-- Filter Button -->
-    <button
-      type="button"
-      class="flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 bg-gray-50 hover:bg-gray-100 text-gray-600 transition"
-      title="Filter"
-      (click)="toggleFilter()"
-    >
-      <i class="mdi mdi-filter-outline text-lg"></i>
-    </button>
+    <!-- Right Section -->
+    <div class="flex items-center gap-2">
+      <!-- Search box -->
+      <div class="relative">
+        <i class="mdi mdi-magnify absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+        <input type="text" placeholder="Search in grid..."
+          class="pl-8 pr-3 py-1.5 w-48 border border-gray-300 rounded-md text-sm text-gray-700 
+               bg-gray-50 focus:bg-white focus:ring-1 focus:ring-[#E53935] focus:border-[#E53935] outline-none transition" (input)="onQuickFilter($event)" />
+      </div>
 
-    <!-- Refresh Button -->
-    <button
-      type="button"
-      class="flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 bg-gray-50 hover:bg-gray-100 text-gray-600 transition"
-      title="Refresh"
-      (click)="refreshGrid()"
-    >
-      <i class="mdi mdi-refresh text-lg"></i>
-    </button>
+      <!-- Filter Button -->
+      <button type="button"
+        class="flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 bg-gray-50 hover:bg-gray-100 text-gray-600 transition"
+        title="Filter" (click)="toggleFilter()">
+        <i class="mdi mdi-filter-outline text-lg"></i>
+      </button>
 
-    <!-- Add Button -->
-    <button
-      type="button"
-      class="flex items-center gap-1 px-4 py-1.5 bg-[#E53935] text-white rounded-md text-sm hover:bg-[#c62828] shadow-sm transition"
-      (click)="openDialog()"
-    >
-      <i class="mdi mdi-plus text-lg"></i>
-      <span class="font-medium">Add</span>
-    </button>
+      <!-- Refresh Button -->
+      <button type="button"
+        class="flex items-center justify-center w-8 h-8 rounded-md border border-gray-300 bg-gray-50 hover:bg-gray-100 text-gray-600 transition"
+        title="Refresh" (click)="refreshGrid()">
+        <i class="mdi mdi-refresh text-lg"></i>
+      </button>
+
+      <!-- Add Button -->
+      <button type="button"
+        class="flex items-center gap-1 px-4 py-1.5 bg-[#E53935] text-white rounded-md text-sm hover:bg-[#c62828] shadow-sm transition"
+        (click)="openDialog()">
+        <i class="mdi mdi-plus text-lg"></i>
+        <span class="font-medium">Add</span>
+      </button>
+    </div>
   </div>
-</div>
-
-
-
   <div class="flex-1">
-    <ag-grid-angular
-      class="ag-theme-alpine w-full h-full"
-      [rowData]="rowData"
-      [columnDefs]="columnDefs"
-      [gridOptions]="gridOptions"
-      [overlayNoRowsTemplate]="noRowsTemplate"
-      rowSelection="single"
-      domLayout="normal"
+    <ag-grid-angular class="ag-theme-alpine w-full h-full" [rowData]="rowData" [columnDefs]="columnDefs"
+      [gridOptions]="gridOptions" [overlayNoRowsTemplate]="noRowsTemplate" rowSelection="single" domLayout="normal"
       (gridReady)="onGridReady($event)">
     </ag-grid-angular>
   </div>
