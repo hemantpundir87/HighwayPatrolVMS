@@ -7,6 +7,7 @@ import { getPool } from "./db/mssql.config";
 import controlRoomRoutes from "./routes/controlRoom.routes";
 import authRoutes from "./routes/auth.routes";
 import menuRoutes from "./routes/menu.routes";
+import packageRoutes from "./routes/package.routes";
 
 dotenv.config();
 
@@ -41,6 +42,7 @@ app.get("/api/health", async (_req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/menu", menuRoutes);
 app.use("/api/controlroom", controlRoomRoutes);
+app.use("/api/package", packageRoutes);
 
 
 // 🧱 Global Error Handler

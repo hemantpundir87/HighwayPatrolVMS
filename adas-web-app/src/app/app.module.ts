@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -20,6 +21,7 @@ import { HttpUnifiedInterceptor } from './core/interceptors/http-unified.interce
    
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     CoreModule,        // HttpClient + AuthInterceptor (singleton)
     SharedModule,      // common shared components/pipes/directives

@@ -55,7 +55,11 @@ export class ControlRoomSetupComponent implements OnInit {
         if (this.data) {
             this.isEdit = true;
             this.title = 'Edit Control Room';
-            this.form.patchValue(this.data);
+            const mappedData = {
+                ...this.data,
+                DataStatus: Number(this.data.DataStatus) === 1
+            };
+            this.form.patchValue(mappedData);
         }
     }
 

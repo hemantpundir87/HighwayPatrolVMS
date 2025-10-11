@@ -89,7 +89,6 @@ export class ControlRoomMasterComponent implements OnInit {
     this.service.getAll().subscribe({
       next: (res) => {
         this.rowData = res || [];
-        console.log(this.rowData)
         if (this.gridApi) {
           this.rowData.length === 0
             ? this.gridApi.showNoRowsOverlay()

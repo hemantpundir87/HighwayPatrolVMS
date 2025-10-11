@@ -3,7 +3,6 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import logger from './logger';
 import { Response } from "express";
-import { ApiResponse, DbRecord } from '../models/api-response.model';
 
 export const generateUUID = (): string => uuidv4();
 export const isWindows = (): boolean => process.platform === 'win32';
@@ -26,7 +25,7 @@ export const getRootPath = (): string => {
       rootPath = '/home/ProjectConfig/ADASv1';
       break;
     case 'darwin':
-      rootPath = `${os.homedir()}/ProjectConfig/ADASv1`;
+      rootPath = '/Users/ProjectConfig/ADASv1';
       break;
     default:
       rootPath = process.cwd();
@@ -83,7 +82,76 @@ export const sanitizeFilename = (name: string): string =>
   name.replace(/[<>:"/\\|?*]+/g, '_');
 
 
-export const generateSetupResponse = (spName: string, dbResult: any): ApiResponse => {
+// export const generateSetupResponse = (spName: string, dbResult: any,res: Response): ApiResponse => {
+//   try {
+//     const records = Array.isArray(dbResult?.recordset)
+//       ? dbResult.recordset
+//       : Array.isArray(dbResult)
+//         ? dbResult
+//         : [];
+
+//     if (!records.length) {
+//       logger.warn(`[${spName}] Empty or invalid DB response.`);
+//       return { StatusCode: 500, AlertMessage: 'Invalid database response.', AlertData: [] };
+//     }
+
+//     const first = records[0];
+
+//     const alertMessages = records
+//       .map((r: { AlertMessage?: string }) => r.AlertMessage)
+//       .filter((msg: any): msg is string => !!msg);
+
+//     const uniqueCodes = [
+//       ...new Set(
+//         records
+//           .map((r: { StatusCode?: number }) => r.StatusCode)
+//           .filter((c: any): c is number => typeof c === 'number')
+//       ),
+//     ];
+
+//     const finalStatusCode = Number(
+//       uniqueCodes.includes(500)
+//         ? 500
+//         : uniqueCodes.includes(409)
+//         ? 409
+//         : uniqueCodes.includes(400)
+//         ? 400
+//         : uniqueCodes[0] ?? 200
+//     );
+
+//     // ✅ Combine multiple 409 messages nicely
+//     const summaryMessage =
+//       alertMessages.length > 1
+//         ? alertMessages.join(' | ')
+//         : alertMessages[0] || 'Operation completed successfully.';
+
+//     // ✅ Parse JSON AlertData (only once)
+//     let alertData: any = [];
+//     try {
+//       alertData = first.AlertData ? JSON.parse(first.AlertData) : [];
+//     } catch {
+//       alertData = first.AlertData || [];
+//     }
+
+//     return res.status(finalStatusCode).json([{ AlertMessage: summaryMessage || "Success", status: true, }]);
+
+//     // return {
+//     //   StatusCode: finalStatusCode,
+//     //   AlertMessage: summaryMessage,
+//     //   AlertData: alertData,
+//     // };
+//   } catch (err: any) {
+//     logger.error(`[${spName}] Error in generateSetupResponse:`, err);
+//     handleErrorMessageResponse(err, res, 500);
+
+//   }
+// };
+
+export const generateSetupResponse = (
+  spName: string,
+  dbResult: any,
+  res: Response
+): void => {
   try {
     const records = Array.isArray(dbResult?.recordset)
       ? dbResult.recordset
@@ -93,11 +161,11 @@ export const generateSetupResponse = (spName: string, dbResult: any): ApiRespons
 
     if (!records.length) {
       logger.warn(`[${spName}] Empty or invalid DB response.`);
-      return { StatusCode: 500, AlertMessage: 'Invalid database response.', AlertData: [] };
+      res.status(500).json([{ AlertMessage: 'Invalid database response.', status: false }]);
+      return;
     }
 
     const first = records[0];
-
     const alertMessages = records
       .map((r: { AlertMessage?: string }) => r.AlertMessage)
       .filter((msg: any): msg is string => !!msg);
@@ -110,44 +178,33 @@ export const generateSetupResponse = (spName: string, dbResult: any): ApiRespons
       ),
     ];
 
-    const finalStatusCode = Number(
+    const finalStatusCode: number = Number(
       uniqueCodes.includes(500)
         ? 500
         : uniqueCodes.includes(409)
-        ? 409
-        : uniqueCodes.includes(400)
-        ? 400
-        : uniqueCodes[0] ?? 200
+          ? 409
+          : uniqueCodes.includes(400)
+            ? 400
+            : uniqueCodes.length > 0
+              ? uniqueCodes[0]
+              : 200
     );
 
-    // ✅ Combine multiple 409 messages nicely
+
     const summaryMessage =
       alertMessages.length > 1
         ? alertMessages.join(' | ')
         : alertMessages[0] || 'Operation completed successfully.';
 
-    // ✅ Parse JSON AlertData (only once)
-    let alertData: any = [];
-    try {
-      alertData = first.AlertData ? JSON.parse(first.AlertData) : [];
-    } catch {
-      alertData = first.AlertData || [];
-    }
-
-    return {
-      StatusCode: finalStatusCode,
-      AlertMessage: summaryMessage,
-      AlertData: alertData,
-    };
+    res.status(finalStatusCode).json([
+      { AlertMessage: summaryMessage, status: finalStatusCode < 400 },
+    ]);
   } catch (err: any) {
     logger.error(`[${spName}] Error in generateSetupResponse:`, err);
-    return {
-      StatusCode: 500,
-      AlertMessage: 'Error while processing response.',
-      AlertData: [err.message],
-    };
+    handleErrorMessageResponse(err, res, 500);
   }
 };
+
 
 export function handleErrorMessageResponse(errorMessage: string, res: Response, statusCode: number = 500) {
   return res.status(statusCode).json([{ AlertMessage: errorMessage || "RequestError", status: false, }]);

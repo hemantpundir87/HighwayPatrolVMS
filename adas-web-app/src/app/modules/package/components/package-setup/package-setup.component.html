@@ -1,0 +1,84 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+
+<mat-dialog-content [formGroup]="form" class="flex flex-col gap-4 mt-2">
+
+  <!-- Control Room Dropdown -->
+  <mat-form-field appearance="fill">
+    <mat-label>Control Room</mat-label>
+    <mat-select formControlName="ControlRoomId">
+  <mat-option *ngFor="let room of controlRooms" [value]="room.ControlRoomId">
+    {{ room.ControlRoomName }}
+  </mat-option>
+</mat-select>
+
+    <mat-error *ngIf="form.get('ControlRoomId')?.touched && form.get('ControlRoomId')?.invalid">
+      {{ getError('ControlRoomId') }}
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Start Coordinates -->
+  <div class="flex gap-3">
+    <mat-form-field appearance="fill" class="flex-1">
+      <mat-label>Start Latitude</mat-label>
+      <input matInput formControlName="StartLatitude" placeholder="Ex: 23.456789" />
+      <mat-error *ngIf="form.get('StartLatitude')?.touched && form.get('StartLatitude')?.invalid">
+        {{ getError('StartLatitude') }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="flex-1">
+      <mat-label>Start Longitude</mat-label>
+      <input matInput formControlName="StartLongitude" placeholder="Ex: 77.654321" />
+      <mat-error *ngIf="form.get('StartLongitude')?.touched && form.get('StartLongitude')?.invalid">
+        {{ getError('StartLongitude') }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <!-- End Coordinates -->
+  <div class="flex gap-3">
+    <mat-form-field appearance="fill" class="flex-1">
+      <mat-label>End Latitude</mat-label>
+      <input matInput formControlName="EndLatitude" placeholder="Ex: 23.567890" />
+      <mat-error *ngIf="form.get('EndLatitude')?.touched && form.get('EndLatitude')?.invalid">
+        {{ getError('EndLatitude') }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="flex-1">
+      <mat-label>End Longitude</mat-label>
+      <input matInput formControlName="EndLongitude" placeholder="Ex: 77.765432" />
+      <mat-error *ngIf="form.get('EndLongitude')?.touched && form.get('EndLongitude')?.invalid">
+        {{ getError('EndLongitude') }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <!-- Chainage -->
+  <div class="flex gap-3">
+    <mat-form-field appearance="fill" class="flex-1">
+      <mat-label>Start Chainage (km)</mat-label>
+      <input matInput formControlName="StartChainage" placeholder="Ex: 0.000" />
+      <mat-error *ngIf="form.get('StartChainage')?.touched && form.get('StartChainage')?.invalid">
+        {{ getError('StartChainage') }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="flex-1">
+      <mat-label>End Chainage (km)</mat-label>
+      <input matInput formControlName="EndChainage" placeholder="Ex: 15.200" />
+      <mat-error *ngIf="form.get('EndChainage')?.touched && form.get('EndChainage')?.invalid">
+        {{ getError('EndChainage') }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <!-- Status -->
+  <mat-slide-toggle formControlName="DataStatus">Active</mat-slide-toggle>
+</mat-dialog-content>
+
+<!-- 🔹 Actions -->
+<mat-dialog-actions align="end" class="mt-4">
+  <button mat-stroked-button (click)="close()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="save()">Save</button>
+</mat-dialog-actions>

@@ -31,9 +31,9 @@ export const controlRoomSetup = async (req: Request, res: Response): Promise<voi
       ModifiedBy: userId
     });
 
-    const response = generateSetupResponse("USP_ControlRoomSetup", result);
-    res.status(response.StatusCode).json(response);
+    generateSetupResponse("USP_ControlRoomSetup", result,res);
   } catch (error: any) {
+    logger.error("[PackageSetup] Exception:", error);
     handleErrorMessageResponse(error, res, 500)
   }
 };

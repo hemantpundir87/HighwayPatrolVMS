@@ -22,6 +22,10 @@ const routes: Routes = [
         path: 'controlroom/master',
         loadChildren: () => import('./modules/control-room/control-room.module').then(m => m.ControlRoomModule),
       },
+      {
+        path: 'controlroom/package',
+        loadChildren: () => import('./modules/package/package.module').then(m => m.PackageModule),
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },

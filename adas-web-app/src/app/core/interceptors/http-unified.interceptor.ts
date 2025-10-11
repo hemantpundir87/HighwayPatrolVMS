@@ -57,7 +57,7 @@ export class HttpUnifiedInterceptor implements HttpInterceptor {
         return throwError(() => err);
       }),
       finalize(() => {
-        console.log('🧹 finalize() called for:', req.url);
+        //console.log('🧹 finalize() called for:', req.url);
         this.loader.hide();
       })
     );

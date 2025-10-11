@@ -1,0 +1,33 @@
+<div class="flex flex-col p-2 confi-page-container">
+  <div class="page-header">
+    <div class="page-title">
+      <i class="mdi mdi-video-input-component text-2xl"></i>
+      <h2>Package Master</h2>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <div class="page-search">
+        <i class="mdi mdi-magnify"></i>
+        <input type="text" placeholder="Search in grid..." (input)="onQuickFilter($event)" />
+      </div>
+
+      <button type="button" class="page-btn" title="Filter" (click)="toggleFilter()">
+        <i class="mdi mdi-filter-outline text-lg"></i>
+      </button>
+
+      <button type="button" class="page-btn" title="Refresh" (click)="refreshGrid()">
+        <i class="mdi mdi-refresh text-lg"></i>
+      </button>
+
+      <button type="button" class="page-add" (click)="openDialog()">
+        <i class="mdi mdi-plus text-lg"></i><span>Add</span>
+      </button>
+    </div>
+  </div>
+  <div class="flex-1">
+    <ag-grid-angular class="ag-theme-alpine w-full h-full" [rowData]="rowData" [columnDefs]="columnDefs"
+      [gridOptions]="gridOptions" [overlayNoRowsTemplate]="noRowsTemplate" rowSelection="single" domLayout="normal"
+      (gridReady)="onGridReady($event)">
+    </ag-grid-angular>
+  </div>
+</div>

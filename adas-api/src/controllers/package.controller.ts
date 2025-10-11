@@ -1,14 +1,26 @@
 import { Request, Response } from "express";
 import { executeSP } from "../db/sp.executor";
 import { logger } from "../utils/logger";
-import { generateSetupResponse } from "../utils/common.utils";
+import { generateSetupResponse, handleDatalist, handleErrorMessageResponse } from "../utils/common.utils";
+
+
+export const getAllPackages = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const controlRoomId = Number(req.query.ControlRoomId || 0);
+    const result = await executeSP("USP_PackageDetailsGetAll", { ControlRoomId: controlRoomId });
+    handleDatalist(result, res);
+  } catch (error: any) {
+    logger.error("[PackageGetAll] Exception:", error);
+    handleErrorMessageResponse(error, res, 500);
+  }
+};
 
 export const packageSetup = async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = (req as any).user?.UserId || 0;
     const body = req.body;
 
-    const result = await executeSP("USP_PackageSetup", {
+    const result = await executeSP("USP_PackageDetailsSetup", {
       PackageId: body.PackageId || 0,
       ControlRoomId: body.ControlRoomId,
       StartLatitude: body.StartLatitude,
@@ -22,15 +34,12 @@ export const packageSetup = async (req: Request, res: Response): Promise<void> =
       ModifiedBy: userId
     });
 
-    const response = generateSetupResponse("USP_PackageSetup", result);
-    logger.info(`[PackageSetup]`, response);
-    res.status(response.StatusCode).json(response);
+
+    generateSetupResponse("USP_PackageDetailsSetup", result, res);
   } catch (error: any) {
     logger.error("[PackageSetup] Exception:", error);
-    res.status(500).json({
-      StatusCode: 500,
-      AlertMessage: "Internal Server Error",
-      AlertData: error.message,
-    });
+    handleErrorMessageResponse(error, res, 500);
   }
 };
+
+
