@@ -7,6 +7,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@import 'ag-grid-community/styles/ag-grid.css';
+@import 'ag-grid-community/styles/ag-theme-alpine.css';
+
 /* =========================================================
    GLOBAL TAILWIND OVERRIDES — Prevent Angular Material resets
    ========================================================= */
@@ -33,7 +36,7 @@
 @import 'login-page.scss';
 @import 'admin-layout.scss';
 @import 'form-popup.scss';
-@import 'ag-grid.scss';
+@import 'ag-grid.scss'; // your overrides
 
 /* ---------- Global Resets ---------- */
 html,

@@ -1,4 +1,8 @@
-/* Light Mode */
+/* ============================
+   AG GRID — Dark/Light Theme
+   ============================ */
+
+/* Light (default) */
 .ag-theme-alpine {
   --ag-background-color: #ffffff;
   --ag-header-background-color: #f3f4f6;
@@ -11,18 +15,18 @@
   --ag-font-size: 14px;
 }
 
-/* Dark Mode */
+/* Dark mode */
 .dark .ag-theme-alpine {
   --ag-background-color: #1f2937 !important;
   --ag-header-background-color: #374151 !important;
   --ag-odd-row-background-color: #111827 !important;
   --ag-border-color: #374151 !important;
-  --ag-row-hover-color: rgba(239, 68, 68, 0.15) !important;
   --ag-header-foreground-color: #f9fafb !important;
   --ag-foreground-color: #e5e7eb !important;
+  --ag-row-hover-color: rgba(239, 68, 68, 0.15) !important;
 }
 
-/* Optional rounded edges */
+/* Optional styling */
 .ag-theme-alpine {
   border-radius: 8px;
   overflow: hidden;
