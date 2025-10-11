@@ -16,10 +16,10 @@ export class TopbarComponent {
       // If you have an AuthService, call it here instead.
       localStorage.removeItem('token');
       sessionStorage.removeItem('token');
-      this.router.navigate(['/auth/login']);
+      this.router.navigate(['/login']);
     } catch (e) {
       console.error('Logout failed', e);
-      this.router.navigate(['/auth/login']);
+      this.router.navigate(['/login']);
     }
   }
 }
