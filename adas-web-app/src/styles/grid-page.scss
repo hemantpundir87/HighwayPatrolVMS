@@ -1,0 +1,119 @@
+/* =========================================================
+   PAGE STYLES — Shared Layout for Masters & Grids
+   Rakshak ADAS / Softomation
+   ========================================================= */
+
+/* ---------- Container ---------- */
+.page-container {
+  @apply flex flex-col p-2 h-full;
+}
+
+/* ---------- Page Header ---------- */
+.page-header {
+  @apply flex flex-wrap justify-between items-center mb-4 p-2 rounded-lg shadow-sm border transition-all;
+
+  background-color: #ffffff;
+  border-color: #e5e7eb; /* gray-200 */
+  color: #1f2937; /* gray-800 */
+}
+
+/* 🌙 Dark Theme */
+.dark .page-header {
+  background-color: #1f2937; /* gray-800 */
+  border-color: #374151;     /* gray-700 */
+  color: #e5e7eb;            /* gray-200 */
+}
+
+/* ---------- Title Section ---------- */
+.page-title {
+  @apply flex items-center gap-2 text-lg font-semibold;
+}
+
+.page-title i {
+  color: #e53935; /* Rakshak Red */
+}
+
+.dark .page-title i {
+  color: #ef4444;
+}
+
+/* ---------- Search Input ---------- */
+.page-search {
+  @apply relative;
+}
+
+.page-search i {
+  @apply absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 text-lg;
+}
+
+.page-search input {
+  @apply pl-8 pr-3 py-1.5 w-48 border rounded-md text-sm outline-none transition;
+  background-color: #f9fafb;
+  border-color: #d1d5db; /* gray-300 */
+  color: #374151;
+}
+
+.page-search input:focus {
+  background-color: #ffffff;
+  border-color: #e53935;
+  box-shadow: 0 0 0 1px #e53935;
+}
+
+/* 🌙 Dark Mode */
+.dark .page-search input {
+  background-color: #111827;
+  border-color: #374151;
+  color: #e5e7eb;
+}
+
+.dark .page-search input:focus {
+  background-color: #1f2937;
+  border-color: #ef4444;
+  box-shadow: 0 0 0 1px #ef4444;
+}
+
+/* ---------- Utility Buttons ---------- */
+.page-btn {
+  @apply flex items-center justify-center rounded-md border transition;
+  width: 2rem;
+  height: 2rem;
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+  color: #4b5563;
+}
+
+.page-btn:hover {
+  background-color: #f3f4f6;
+}
+
+/* 🌙 Dark Mode */
+.dark .page-btn {
+  background-color: #1f2937;
+  border-color: #374151;
+  color: #d1d5db;
+}
+
+.dark .page-btn:hover {
+  background-color: #374151;
+}
+
+/* ---------- Add Button ---------- */
+.page-add {
+  @apply flex items-center gap-1 px-4 py-1.5 rounded-md text-sm font-medium shadow-sm transition;
+  background-color: #e53935;
+  color: #fff;
+}
+
+.page-add:hover {
+  background-color: #c62828;
+}
+
+/* 🌙 Dark Mode */
+.dark .page-add {
+  background-color: #ef4444;
+  color: #fff;
+}
+
+.dark .page-add:hover {
+  background-color: #dc2626;
+}

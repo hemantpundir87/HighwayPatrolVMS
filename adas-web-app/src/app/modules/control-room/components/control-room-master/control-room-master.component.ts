@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { ControlRoomService } from '../../control-room.service';
 import { ControlRoomSetupComponent } from '../control-room-setup/control-room-setup.component';
 
@@ -38,10 +38,8 @@ export class ControlRoomMasterComponent implements OnInit {
     }
   ];
 
-  gridOptions = {
-    sortable: true,
-    filter: true,
-    resizable: true,
+  gridOptions: GridOptions = {
+    theme: 'legacy' as any,   // 👈 important fix for v34 CSS themes
     pagination: true,
     paginationPageSize: 10,
     paginationPageSizeSelector: [10, 25, 50, 100],
@@ -51,7 +49,7 @@ export class ControlRoomMasterComponent implements OnInit {
       }
     }
   };
-
+  
   noRowsTemplate = `
   <div class="no-rows-message">
     <i class="mdi mdi-information-outline text-4xl text-gray-400"></i>
