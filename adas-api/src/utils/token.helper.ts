@@ -21,11 +21,5 @@ export const generateToken = (payload: AuthenticatedUser,expiresIn: string | num
   return { token, formattedExpiry };
 };
 
-export const verifyToken = (token: string): JwtPayload | string | null => {
-  try {
-    return jwt.verify(token, SECRET);
-  } catch {
-    return null;
-  }
-};
+
 

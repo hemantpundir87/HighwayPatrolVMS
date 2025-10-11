@@ -134,38 +134,38 @@ export function handleSuccessMessageResponse(alertMessage: string, res: Response
   return res.status(200).json([{ AlertMessage: alertMessage || "Success", status: true, }]);
 }
 
-function manage_datastatus(data:any) {
-    return data.map((item: { DataStatus: any; }) => {
-        let DataStatusName = '';
-        switch (item.DataStatus) {
-            case 1:
-                DataStatusName = 'Active';
-                break;
-            case 0:
-                DataStatusName = 'Deleted';
-                break;
-            default:
-                DataStatusName = 'Inactive';
-                break;
-        }
-        return {
-            ...item,
-            DataStatusName
-        };
-    });
+function manage_datastatus(data: any) {
+  return data.map((item: { DataStatus: any; }) => {
+    let DataStatusName = '';
+    switch (item.DataStatus) {
+      case 1:
+        DataStatusName = 'Active';
+        break;
+      case 0:
+        DataStatusName = 'Deleted';
+        break;
+      default:
+        DataStatusName = 'Inactive';
+        break;
+    }
+    return {
+      ...item,
+      DataStatusName
+    };
+  });
 }
 
 export function handleDatalist(result: any, res: Response) {
-    
-    if (result && result.length > 0) {
-        let data = result;
-        if (Array.isArray(data)) {
-            data = manage_datastatus(data);
-        }
-        return res.status(200).json(data);
-    } else {
-        return res.status(204).send();
+  console.log(result)
+  if (result && result.length > 0) {
+    let data = result;
+    if (Array.isArray(data)) {
+      data = manage_datastatus(data);
     }
+    return res.status(200).json(data);
+  } else {
+    return res.status(204).send();
+  }
 }
 
 export function handleSingleData(data: any, res: Response, statusCode: number = 204) {

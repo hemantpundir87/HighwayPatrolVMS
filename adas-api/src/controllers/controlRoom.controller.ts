@@ -1,7 +1,21 @@
 import { Request, Response } from "express";
 import { executeSP } from "../db/sp.executor";
 import { logger } from "../utils/logger";
-import { generateSetupResponse } from "../utils/common.utils";
+import { generateSetupResponse, handleDatalist, handleErrorMessageResponse } from "../utils/common.utils";
+
+export const getAllControlRooms = async (req: Request, res: Response): Promise<void> => {
+  try {
+    console.log("Req")
+    const userId = (req as any).user?.UserId || 0;
+
+    const result = await executeSP("USP_ControlRoomGetAll", { UserId: userId });
+    handleDatalist(result, res);
+  } catch (error: any) {
+    logger.error("[ControlRoomGetAll] Exception:", error);
+    handleErrorMessageResponse(error, res, 500)
+  }
+};
+
 
 export const controlRoomSetup = async (req: Request, res: Response): Promise<void> => {
   try {

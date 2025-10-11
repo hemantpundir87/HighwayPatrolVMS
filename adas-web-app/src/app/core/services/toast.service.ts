@@ -1,27 +1,51 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-export interface ToastMessage {
+export interface Toast {
   id: number;
-  type: 'success' | 'error' | 'warning' | 'info';
   text: string;
-  duration?: number;
+  type: 'success' | 'error' | 'warning' | 'info';
 }
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
-  private toasts = new BehaviorSubject<ToastMessage[]>([]);
-  toastState$ = this.toasts.asObservable();
+  private toasts: Toast[] = [];
+  private toastState = new BehaviorSubject<Toast[]>([]);
+  toastState$ = this.toastState.asObservable();
 
-  show(text: string, type: ToastMessage['type'] = 'info', duration = 4000) {
-    const id = Date.now();
-    const toast: ToastMessage = { id, text, type, duration };
-    this.toasts.next([...this.toasts.value, toast]);
-    setTimeout(() => this.remove(id), duration);
+  private counter = 0;
+
+  // ✅ Public alert methods
+  success(msg: string): void {
+    this.show(msg, 'success');
   }
 
-  remove(id: number) {
-    const updated = this.toasts.value.filter((t) => t.id !== id);
-    this.toasts.next(updated);
+  error(msg: string): void {
+    this.show(msg, 'error');
+  }
+
+  warning(msg: string): void {
+    this.show(msg, 'warning');
+  }
+
+  info(msg: string): void {
+    this.show(msg, 'info');
+  }
+
+  // ✅ Generic add toast
+  show(message: string, type: Toast['type'] = 'info', timeout = 3500): void {
+    const id = ++this.counter;
+    const toast: Toast = { id, text: message, type };
+    this.toasts.push(toast);
+    this.toastState.next([...this.toasts]);
+
+    // auto-remove
+    setTimeout(() => this.remove(id), timeout);
+  }
+
+  // ✅ Remove toast by ID
+  remove(id: number): void {
+    this.toasts = this.toasts.filter(t => t.id !== id);
+    this.toastState.next([...this.toasts]);
   }
 }

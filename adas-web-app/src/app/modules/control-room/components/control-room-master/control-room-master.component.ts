@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
-// import { ControlRoomService } from '../../../core/services/controlroom.service';
+import { ControlRoomService } from '../../control-room.service';
+
 // import { ControlRoomFormComponent } from './control-room-form.component';
 
 @Component({
@@ -56,8 +57,7 @@ noRowsTemplate = `
   </div>
 `;
   private gridApi!: GridApi;
-  // constructor(private service: ControlRoomService, private dialog: MatDialog) {}
-  constructor(private dialog: MatDialog) {}
+  constructor(private service: ControlRoomService,private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -86,21 +86,20 @@ refreshGrid(): void {
   }
 
   loadData(): void {
-    // Example static test (replace with API)
-    // this.service.getAll().subscribe({
-    //   next: (res) => {
-    //     this.rowData = res || [];
-    //     if (this.gridApi) {
-    //       this.rowData.length === 0
-    //         ? this.gridApi.showNoRowsOverlay()
-    //         : this.gridApi.hideOverlay();
-    //     }
-    //   },
-    //   error: (err) => {
-    //     console.error('Failed to load control room data:', err);
-    //     this.gridApi?.showNoRowsOverlay();
-    //   }
-    // });
+    this.service.getAll().subscribe({
+      next: (res) => {
+        this.rowData = res || [];
+        if (this.gridApi) {
+          this.rowData.length === 0
+            ? this.gridApi.showNoRowsOverlay()
+            : this.gridApi.hideOverlay();
+        }
+      },
+      error: (err) => {
+        console.error('Failed to load control room data:', err);
+        this.gridApi?.showNoRowsOverlay();
+      }
+    });
   }
 
   openDialog(data: any = null): void {
